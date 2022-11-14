@@ -1,20 +1,48 @@
-// Datastructurehw2.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
+#include <queue>
 #include <iostream>
+using namespace std;
 
+void Menu()
+{
+	cout << "=============================================="
+		"======================";
+	cout << "\nMenu:\n";
+	cout << "1.Start the game\n";
+	cout << "2.Settings\n";
+	cout << "3.Exit\n";
+	cout << "=============================================="
+		"======================";
+	cout << "\nYour choice:";
+}
 int main()
 {
-    std::cout << "Hello World!\n";
+	int selection;
+	Menu();
+	cin >> selection;
+	switch (selection)
+	{
+	case 1:
+	{
+		int temp;
+		cout << "\nChoose a gamemode:\n";
+		cout << "1.Single Player\n";
+		cout << "2.Multiplayer\n";
+		cin >> temp;
+		while (temp != 1 && temp != 2)
+		{
+			cout << "\nPlease enter the proper gamemode:";
+			cin >> temp;
+		}
+	}
+	case 2:
+	{
+		//settings
+	}
+	case 3:
+	{
+		//EXIT
+	}
+	default:
+		break;
+	}
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
