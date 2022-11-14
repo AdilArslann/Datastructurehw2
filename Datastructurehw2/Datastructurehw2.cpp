@@ -1,6 +1,22 @@
 #include <queue>
 #include <iostream>
+#include <cstdlib>
+#include <list>
 using namespace std;
+
+void random(string playerone)
+{
+
+}
+
+void singleplayer()
+{
+
+}
+
+void multiplayer()
+{
+}
 
 void Menu()
 {
@@ -28,10 +44,27 @@ int main()
 		cout << "1.Single Player\n";
 		cout << "2.Multiplayer\n";
 		cin >> temp;
-		while (temp != 1 && temp != 2)
+		while (temp <= 1 || temp >= 3)
 		{
 			cout << "\nPlease enter the proper gamemode:";
 			cin >> temp;
+		}
+		switch (temp)
+		{
+		case 1:
+		{
+			singleplayer();
+		}
+		case 2:
+		{
+			multiplayer();
+		}
+		case 3:
+		{
+			//tournament mode
+		}
+		default:
+			break;
 		}
 	}
 	case 2:
@@ -40,7 +73,7 @@ int main()
 	}
 	case 3:
 	{
-		//EXIT
+		exit(0);
 	}
 	default:
 		break;
