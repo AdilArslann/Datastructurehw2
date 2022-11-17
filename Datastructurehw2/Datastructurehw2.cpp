@@ -3,6 +3,10 @@
 #include <queue>
 using namespace std;
 
+const char HYDRO = 'H';
+const char PYRO = 'P';
+const char CRYO = 'C';
+
 void controls()
 {
 	cout << "=============================================="
@@ -28,19 +32,87 @@ void controls()
 		"======================";
 }
 
-
-void random(queue<string> playerone)
+char random()
 {
+	srand(time(0));
+	int num = rand() % 2 + 1;
 
+	if (num == 0) return 'H';
+	if (num == 1) return 'P';
+	if (num == 2) return 'C';
 }
-void checkcombo(queue<string> playerone)
+
+char userselect()
+{
+	char select;
+	cout << "\nPlease choose your attack element!";
+	cin >> select;
+
+	while(select != 'H' && select != 'P' && select != 'C')
+	{
+		cout << "\nPlease enter a valid element!!";
+		cout << "\n 'H' for hydro, 'P' for pyro, and 'C' for cryo";
+		cin >> select;
+	}
+	return select;
+}
+
+char winner(char p1choice, char p2choice)
+{
+	if(p1choice == HYDRO && p2choice == PYRO)
+	{
+		return '1';
+	}
+	else if(p1choice == HYDRO && p2choice == CRYO)
+	{
+		return '2';
+	}
+	else if(p1choice == PYRO && p2choice == HYDRO)
+	{
+		return '2';
+	}
+	else if(p1choice == PYRO && p2choice == CRYO)
+	{
+		return '1';
+	}
+	else if(p1choice == CRYO && p2choice == HYDRO)
+	{
+		return '1';
+	}
+	else if(p1choice == CRYO && p2choice == PYRO)
+	{
+		return '2';
+	}
+	else if(p1choice == p2choice)
+	{
+		return 'T';
+	}
+}
+
+void queuecount(queue<string> scount)
+{
+	int count;
+	while(scount.empty() != true)
+	{
+		scount.pop();
+		count++;
+	}
+	return count;
+}
+
+void checkcombo(queue<string> player)
 {
 
 }
 
 void singleplayer()
 {
+	queue<string> p1choice, comchoice;
+	char p1, com;
 	controls();
+	p1 = userselect();
+	com = random();
+
 }
 
 void multiplayer()
