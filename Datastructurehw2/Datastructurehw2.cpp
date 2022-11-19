@@ -48,7 +48,7 @@ void outputqueue(queue<string> choice)
 
 char randomm()
 {
-	srand(time(0));
+	srand(time(NULL));
 	int num = (rand() % 3) + 1;
 	cout << num;
 	if (num == 1) 
@@ -160,7 +160,7 @@ bool checkcombo(queue<string> player)
  
 void output(int h1, int h2, queue<string> p1, queue<string> p2)
 {
-	cout << "______________________________________________________________________________________________________\n";
+	cout << "\n______________________________________________________________________________________________________\n";
 	cout << "|                                                                                                     |\n";
 	cout << "|        ____                                                                       ____              |\n";
 	cout << "|       |    |                                                                     |    |             |\n";
@@ -177,7 +177,8 @@ void output(int h1, int h2, queue<string> p1, queue<string> p2)
 	cout << "|                                                                                                     |\n";
 	cout << "|                                                                                                     |\n";
 	cout << "|      HEALTH: " << h1 << "                                                             HEALTH: " << h2 << "             |\n";
-	cout << "|      CHOICES: "; outputqueue(p1); cout << "                                                           CHOICES: "; outputqueue(p2); cout << "            |\n";
+	cout << "|      CHOICES: "; outputqueue(p1); cout << "                                                             CHOICES: "; outputqueue(p2); cout << "          |\n";
+	cout << "|_____________________________________________________________________________________________________|\n";
 }
 
 void singleplayer()
@@ -187,7 +188,7 @@ void singleplayer()
 	int p1life, clife, win;
 	p1life = 100; clife = 100;
 
-	while(p1life != 0 || clife != 0)
+	while(p1life >= 0 && clife >= 0)
 	{
 		controls();
 		p1 = userselect();
