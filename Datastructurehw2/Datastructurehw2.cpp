@@ -1,11 +1,12 @@
 #include <iostream>
 #include <cstdlib>
 #include <queue>
+#include <ctime>
 using namespace std;
 
-const char HYDRO = 'H';
-const char PYRO = 'P';
-const char CRYO = 'C';
+const string HYDRO = "H";
+const string PYRO = "P";
+const string CRYO = "C";
 
 void controls()
 {
@@ -32,14 +33,23 @@ void controls()
 		"======================";
 }
 
-char random()
+char randomm()
 {
 	srand(time(0));
-	int num = rand() % 2 + 1;
-
-	if (num == 0) return 'H';
-	if (num == 1) return 'P';
-	if (num == 2) return 'C';
+	int num = (rand() % 3) + 1;
+	cout << num;
+	if (num == 1) 
+	{
+		return 'H';
+	}
+	else if (num == 2)
+	{
+		return 'P';
+	}
+	else
+	{
+		return 'C';
+	}
 }
 
 char userselect()
@@ -57,7 +67,7 @@ char userselect()
 	return select;
 }
 
-char winner(char p1choice, char p2choice)
+char winner(string p1choice, string p2choice)
 {
 	if(p1choice == HYDRO && p2choice == PYRO)
 	{
@@ -83,21 +93,10 @@ char winner(char p1choice, char p2choice)
 	{
 		return '2';
 	}
-	else if(p1choice == p2choice)
+	else
 	{
 		return 'T';
 	}
-}
-
-void queuecount(queue<string> scount)
-{
-	int count;
-	while(scount.empty() != true)
-	{
-		scount.pop();
-		count++;
-	}
-	return count;
 }
 
 void checkcombo(queue<string> player)
@@ -105,14 +104,28 @@ void checkcombo(queue<string> player)
 
 }
 
+
 void singleplayer()
 {
-	queue<string> p1choice, comchoice;
-	char p1, com;
-	controls();
-	p1 = userselect();
-	com = random();
-
+	queue<string> p1choice, cchoice;
+	string p1, com;
+	int p1life, clife;
+	p1life = 100;
+	clife = 100;
+	while(p1life != 0 || clife != 0)
+	{
+		controls();
+		p1 = userselect();
+		com = randomm();
+		p1choice.push(p1);
+		if (p1choice.size() > 3)
+		{
+			p1choice.pop();
+		}
+		cout << "\nSIZE:" << p1choice.size() << endl;
+		cchoice.push(com);
+		cout << winner(p1, com);
+	}
 }
 
 void multiplayer()
@@ -137,15 +150,6 @@ int main()
 	int selection;
 	Menu();
 	cin >> selection;
-	queue<string> player;
-	player.push("P");
-	player.push("H");
-	player.push("C");
-	player.push("H");
-	player.push("P");
-	player.push("c");
-	player.push("P");
-	
 
 	switch (selection)
 	{
