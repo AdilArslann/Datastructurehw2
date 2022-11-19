@@ -7,6 +7,8 @@ using namespace std;
 const string HYDRO = "H";
 const string PYRO = "P";
 const string CRYO = "C";
+queue<string> freezemelt, meltfreeze, vaporize, melt, reversemelt;
+
 
 void controls()
 {
@@ -24,13 +26,24 @@ void controls()
 	cout << "=============================================="
 		"======================";
 	cout << "\nPOSSIBLE COMBOS:";
-	cout << "\nH + C + P = Freemelt";
-	cout << "\nC + H + P = MeltFree";
+	cout << "\nH + C + P = Freezemelt";
+	cout << "\nC + H + P = MeltFreeze";
 	cout << "\nH + H + P = Vaporize";
 	cout << "\nC + C + P = Melt";
 	cout << "\nP + P + C = ReverseMelt\n";
 	cout << "=============================================="
 		"======================";
+}
+
+void outputqueue(queue<string> choice)
+{
+	queue<string> temp;
+	temp = choice;
+	while(!temp.empty())
+	{
+		cout << temp.front();
+		temp.pop();
+	}
 }
 
 char randomm()
@@ -67,51 +80,113 @@ char userselect()
 	return select;
 }
 
-char winner(string p1choice, string p2choice)
+bool winner(string p1choice, string p2choice)
 {
 	if(p1choice == HYDRO && p2choice == PYRO)
 	{
-		return '1';
+		return 1;
 	}
 	else if(p1choice == HYDRO && p2choice == CRYO)
 	{
-		return '2';
+		return 2;
 	}
 	else if(p1choice == PYRO && p2choice == HYDRO)
 	{
-		return '2';
+		return 2;
 	}
 	else if(p1choice == PYRO && p2choice == CRYO)
 	{
-		return '1';
+		return 1;
 	}
 	else if(p1choice == CRYO && p2choice == HYDRO)
 	{
-		return '1';
+		return 1;
 	}
 	else if(p1choice == CRYO && p2choice == PYRO)
 	{
-		return '2';
+		return 2;
 	}
 	else
 	{
-		return 'T';
+		return 0;
 	}
 }
 
-void checkcombo(queue<string> player)
+bool checkcombo(queue<string> player)
 {
-
+	if(player == freezemelt)
+	{
+		cout << "\n----------------------------------------\n";
+		cout << "|  COMBO!!!!! You did Freezemelt combo  |\n";
+		cout << "-----------------------------------------\n";
+		return true;
+	}
+	else if(player == meltfreeze)
+	{
+		cout << "\n----------------------------------------\n";
+		cout << "|  COMBO!!!!! You did Meltfreeze combo  |\n";
+		cout << "-----------------------------------------\n";
+		return true;
+	}
+	else if(player == vaporize)
+	{
+		cout << "\n----------------------------------------\n";
+		cout << "|  COMBO!!!!! You did Vaporize combo  |\n";
+		cout << "---------------------------------------\n";
+		return true;
+	}
+	else if(player == melt)
+	{
+		cout << "\n-----------------------------------\n";
+		cout << "|  COMBO!!!!! You did Melt combo  |\n";
+		cout << "-----------------------------------\n";
+		return true;
+	}
+	else if(player == reversemelt)
+	{
+		cout << "\n------------------------------------------\n";
+		cout << "|  COMBO!!!!! You did Reversemelt combo  |\n";
+		cout << "-----------------------------------------\n";
+		return true;
+	}
+	else
+	{
+		cout << "\n-----------------------\n";
+		cout << "|  No combo for you.  |\n";
+		cout << "-----------------------\n";
+		return false;
+	}
 }
-
+ 
+void output(int h1, int h2, queue<string> p1, queue<string> p2)
+{
+	cout << "______________________________________________________________________________________________________\n";
+	cout << "|                                                                                                     |\n";
+	cout << "|        ____                                                                       ____              |\n";
+	cout << "|       |    |                                                                     |    |             |\n";
+	cout << "|      / _  _ \\                                                       / \\         / -  - \\            |\n";
+	cout << "|     |  o  O  |        _                                             | |        |  w   w |           |\n";
+	cout << "|      \\  W   /        /_\\                                            | |         \\  \\/  /            |\n";
+	cout << "|       \\____/         | |                                            | |          \\____/             |\n";
+	cout << "|    ____|  |______    | |                                            | |     ______|  |____          |\n";
+	cout << "|   \\ \\            \\   | |                                            | |    /            / /         |\n";
+	cout << "|   |\\ \\         |\\ \\  |_|                                            / \\   / /|         / /|         |\n";
+	cout << "|   | \\ \\        | \\ \\|   |                                          /[ ]\\ / / |        / / |         |\n";
+	cout << "|   |  \\ \\_______|__\\/|   |                                           [ ]  \\/__|_______/ /  |         |\n";
+	cout << "|   |   \\___________| |___|                                           [_]  |____________/   |         |\n";
+	cout << "|                                                                                                     |\n";
+	cout << "|                                                                                                     |\n";
+	cout << "|      HEALTH: " << h1 << "                                                             HEALTH: " << h2 << "             |\n";
+	cout << "|      CHOICES: "; outputqueue(p1); cout << "                                                           CHOICES: "; outputqueue(p2); cout << "            |\n";
+}
 
 void singleplayer()
 {
 	queue<string> p1choice, cchoice;
 	string p1, com;
-	int p1life, clife;
-	p1life = 100;
-	clife = 100;
+	int p1life, clife, win;
+	p1life = 100; clife = 100;
+
 	while(p1life != 0 || clife != 0)
 	{
 		controls();
@@ -122,9 +197,26 @@ void singleplayer()
 		{
 			p1choice.pop();
 		}
-		cout << "\nSIZE:" << p1choice.size() << endl;
 		cchoice.push(com);
-		cout << winner(p1, com);
+		if (cchoice.size() > 3)
+		{
+			cchoice.pop();
+		}
+		win = winner(p1, com);
+		if(win == 1)
+		{
+			clife = clife - 5;
+		}
+		else if(win == 2)
+		{
+			clife = clife - 5;
+		}
+		else
+		{
+			p1life = p1life - 3;
+			clife = clife - 3;
+		}
+		output(p1life, clife, p1choice, cchoice);
 	}
 }
 
@@ -147,6 +239,11 @@ void Menu()
 }
 int main()
 {
+	freezemelt.push("H"); freezemelt.push("C"); freezemelt.push("P");
+	meltfreeze.push("C"); meltfreeze.push("H"); meltfreeze.push("P");
+	vaporize.push("H"); vaporize.push("H"); vaporize.push("P");
+	melt.push("C"); melt.push("C"); melt.push("P");
+	reversemelt.push("P"); reversemelt.push("P"); reversemelt.push("C");
 	int selection;
 	Menu();
 	cin >> selection;
