@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <queue>
 #include <ctime>
+#include <vector>
 #include <algorithm>
 using namespace std;
 
@@ -40,7 +41,7 @@ void outputqueue(queue<string> choice)
 {
 	queue<string> temp;
 	temp = choice;
-	while(!temp.empty())
+	while (!temp.empty())
 	{
 		cout << temp.front();
 		temp.pop();
@@ -51,7 +52,7 @@ char randomm()
 {
 	srand(time(0));
 	int num = (rand() % 3) + 1;
-	if (num == 1) 
+	if (num == 1)
 	{
 		return 'H';
 	}
@@ -71,7 +72,7 @@ char userselect()
 	cout << "\nPlease choose your attack element!";
 	cin >> select;
 
-	while(select != 'H' && select != 'P' && select != 'C' && select != 'Q')
+	while (select != 'H' && select != 'P' && select != 'C' && select != 'Q')
 	{
 		cout << "\nPlease enter a valid element!!";
 		cout << "\n 'H' for hydro, 'P' for pyro, and 'C' for cryo OR Q to Quit";
@@ -82,27 +83,27 @@ char userselect()
 
 string winner(string p1choice, string p2choice)
 {
-	if(p1choice == HYDRO && p2choice == PYRO)
+	if (p1choice == HYDRO && p2choice == PYRO)
 	{
 		return "Player 1";
 	}
-	else if(p1choice == HYDRO && p2choice == CRYO)
+	else if (p1choice == HYDRO && p2choice == CRYO)
 	{
 		return "Player 2";
 	}
-	else if(p1choice == PYRO && p2choice == HYDRO)
+	else if (p1choice == PYRO && p2choice == HYDRO)
 	{
 		return "Player 2";
 	}
-	else if(p1choice == PYRO && p2choice == CRYO)
+	else if (p1choice == PYRO && p2choice == CRYO)
 	{
 		return "Player 1";
 	}
-	else if(p1choice == CRYO && p2choice == HYDRO)
+	else if (p1choice == CRYO && p2choice == HYDRO)
 	{
 		return "Player 1";
 	}
-	else if(p1choice == CRYO && p2choice == PYRO)
+	else if (p1choice == CRYO && p2choice == PYRO)
 	{
 		return "Player 2";
 	}
@@ -114,35 +115,35 @@ string winner(string p1choice, string p2choice)
 
 bool checkcombo(queue<string> player)
 {
-	if(player == freezemelt)
+	if (player == freezemelt)
 	{
 		cout << "\n----------------------------------------\n";
 		cout << "|  COMBO!!!!! You did Freezemelt combo  |\n";
 		cout << "-----------------------------------------\n";
 		return true;
 	}
-	else if(player == meltfreeze)
+	else if (player == meltfreeze)
 	{
 		cout << "\n----------------------------------------\n";
 		cout << "|  COMBO!!!!! You did Meltfreeze combo  |\n";
 		cout << "-----------------------------------------\n";
 		return true;
 	}
-	else if(player == vaporize)
+	else if (player == vaporize)
 	{
 		cout << "\n----------------------------------------\n";
 		cout << "|  COMBO!!!!! You did Vaporize combo  |\n";
 		cout << "---------------------------------------\n";
 		return true;
 	}
-	else if(player == melt)
+	else if (player == melt)
 	{
 		cout << "\n-----------------------------------\n";
 		cout << "|  COMBO!!!!! You did Melt combo  |\n";
 		cout << "-----------------------------------\n";
 		return true;
 	}
-	else if(player == reversemelt)
+	else if (player == reversemelt)
 	{
 		cout << "\n------------------------------------------\n";
 		cout << "|  COMBO!!!!! You did Reversemelt combo  |\n";
@@ -157,12 +158,12 @@ bool checkcombo(queue<string> player)
 		return false;
 	}
 }
- 
-void output(int h1, int h2, queue<string> p1, queue<string> p2, string win)
+
+void output(int h1, int h2, queue<string> p1, queue<string> p2, string win, string dmg)
 {
 	cout << "\n______________________________________________________________________________________________________\n";
-	cout << "|                                     " <<  win << " SUCCESSFULL!!                                         | \n";
-	cout << "|        ____                                                                       ____              |\n";
+	cout << "|                                     " << win << " SUCCESSFULL!!                                         | \n";
+	cout << "|        ____                         WITH A DAMAGE OF " << dmg << "                            ____              | \n";
 	cout << "|       |    |                                                                     |    |             |\n";
 	cout << "|      / _  _ \\                                                       / \\         / -  - \\            |\n";
 	cout << "|     |  o  O  |        _                                             | |        |  w   w |           |\n";
@@ -189,7 +190,7 @@ void singleplayer(int comb)
 	int p1life, clife;
 	p1life = 100; clife = 100;
 
-	while(p1life > 0 && clife > 0)
+	while (p1life > 0 && clife > 0)
 	{
 		controls();
 		p1 = userselect();
@@ -209,29 +210,32 @@ void singleplayer(int comb)
 			cchoice.pop();
 		}
 		win = winner(p1, com);
-		if(win == "Player 1")
+		if (win == "Player 1")
 		{
 			clife = clife - 5;
+			output(p1life, clife, p1choice, cchoice, win, "5");
 		}
-		else if(win == "Player 2")
+		else if (win == "Player 2")
 		{
 			p1life = p1life - 5;
+			output(p1life, clife, p1choice, cchoice, win, "5");
 		}
 		else
 		{
 			p1life = p1life - 3;
 			clife = clife - 3;
+			output(p1life, clife, p1choice, cchoice, win, "3 To BOTH SIDES!!");
 		}
-		output(p1life, clife, p1choice, cchoice, win);
-		if(checkcombo(p1choice) == true)
+
+		if (checkcombo(p1choice) == true)
 		{
 			clife = clife - 10;
-			output(p1life, clife, p1choice, cchoice, "COMBOOOOO FROM PLAYER 1");
+			output(p1life, clife, p1choice, cchoice, "COMBOOOOO FROM PLAYER 1", "10");
 		}
-		if(comb == 1 && checkcombo(cchoice) == true)
+		if (comb == 1 && checkcombo(cchoice) == true)
 		{
 			p1life = p1life - 10;
-			output(p1life, clife, p1choice, cchoice, "COMBO FROM COMPUTER");
+			output(p1life, clife, p1choice, cchoice, "COMBO FROM COMPUTER", "10");
 		}
 	}
 }
@@ -243,7 +247,7 @@ bool multiplayer()
 	int p1life, p2life;
 	p1life = 100; p2life = 100;
 
-	while(p1life > 0 && p2life > 0)
+	while (p1life > 0 && p2life > 0)
 	{
 		controls();
 		p1 = userselect();
@@ -263,11 +267,11 @@ bool multiplayer()
 			p2choice.pop();
 		}
 		win = winner(p1, p2);
-		if(win == "Player 1")
+		if (win == "Player 1")
 		{
 			p2life = p2life - 5;
 		}
-		else if(win == "Player 2")
+		else if (win == "Player 2")
 		{
 			p1life = p1life - 5;
 		}
@@ -276,19 +280,19 @@ bool multiplayer()
 			p1life = p1life - 3;
 			p2life = p2life - 3;
 		}
-		output(p1life, p2life, p1choice, p2choice, win);
-		if(checkcombo(p1choice) == true)
+		output(p1life, p2life, p1choice, p2choice, win, "5");
+		if (checkcombo(p1choice) == true)
 		{
 			p2life = p2life - 10;
-			output(p1life, p2life, p1choice, p2choice, "COMBOOOOO FROM PLAYER 1");
+			output(p1life, p2life, p1choice, p2choice, "COMBOOOOO FROM PLAYER 1", "10");
 		}
-		if(checkcombo(p2choice) == true)
+		if (checkcombo(p2choice) == true)
 		{
 			p1life = p1life - 10;
-			output(p1life, p2life, p1choice, p2choice, "COMBOOOOO FROM PLAYER 2");
+			output(p1life, p2life, p1choice, p2choice, "COMBOOOOO FROM PLAYER 2", "10");
 		}
 	}
-	if(p1life == 0)
+	if (p1life == 0)
 	{
 		return true;
 	}
@@ -296,6 +300,22 @@ bool multiplayer()
 	{
 		return false;
 	}
+}
+
+void newround()
+{
+	cout << R"(           _ _     _   _______   _                _            
+	  |   \   | | |   ____| | \      __      / |           
+	  | |\ \  | | |  |____   \ \    /  \    / /            
+	  | | \ \ | | |   ____|   \ \  / /\ \  / /             
+	  | |  \ \/ | |  |____     \ \/ /  \ \/ /              
+	  |_|   \__/  |_______|     \__/    \__/               
+	   ____    _______   _       _   _ _     _   _____     
+	  |  _ \  |  ___  | | |     | | |   \   | | | ___ \    
+	  | |_|/  | |   | | | |     | | | |\ \  | | ||   | |   
+	  |    \  | |   | | | |     | | | | \ \ | | ||   | |   
+	  | |\  \ | |___| | | |_____| | | |  \ \/ | ||___| |   
+	  \_| \_| |_______| |_________| |_|   \__/  |_____/    )" << endl;
 }
 
 
@@ -321,6 +341,7 @@ int main()
 	reversemelt.push("P"); reversemelt.push("P"); reversemelt.push("C");
 	int selection, comb;
 	comb = 0;
+
 	do
 	{
 		Menu();
@@ -362,20 +383,22 @@ int main()
 
 				for (int i = 0; i < num; i++)
 				{
+					cout << "\n COMPETITOR " << i + 1 << ":";
 					cin >> temp;
 					players.push_back(temp);
 				}
 				while (num > 1)
 				{
-					string & tempp = players[1];
-					cout << "\n\n\n\n\n\n\nPlayer 1:" << players.front() << "Player 2:" << tempp << endl;
-					if(multiplayer() == true)
+					newround();
+					string& tempp = players[1];
+					cout << "\n\n\n\n\n\n\nPlayer 1:" << players.front() << "   Player 2:" << tempp << endl;
+					if (multiplayer() == true)
 					{
 						players.erase(players.begin());
 						rotate(players.begin(), players.end() - 1, players.end());
 						num--;
 					}
-					else 
+					else
 					{
 						rotate(players.begin(), players.end() - 1, players.end());
 						players.erase(players.begin());
@@ -383,7 +406,7 @@ int main()
 					}
 
 				}
-				if(num == 1)
+				if (num == 1)
 				{
 					cout << "\nWinner is:" << players.front();
 				}
@@ -409,5 +432,5 @@ int main()
 			break;
 		}
 	} while (true);
-	
+
 }
