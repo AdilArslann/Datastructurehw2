@@ -237,7 +237,56 @@ void singleplayer(int comb)
 
 void multiplayer()
 {
-	controls();
+	queue<string> p1choice, p2choice;
+	string p1, p2, win;
+	int p1life, p2life;
+	p1life = 100; p2life = 100;
+
+	while(p1life > 0 && p2life > 0)
+	{
+		controls();
+		p1 = userselect();
+		p2 = userselect();
+		if (p1 == "Q" || p2 == "Q")
+		{
+			break;
+		}
+		p1choice.push(p1);
+		if (p1choice.size() > 3)
+		{
+			p1choice.pop();
+		}
+		p2choice.push(p2);
+		if (p2choice.size() > 3)
+		{
+			p2choice.pop();
+		}
+		win = winner(p1, p2);
+		if(win == "Player 1")
+		{
+			p2life = p2life - 5;
+		}
+		else if(win == "Player 2")
+		{
+			p1life = p1life - 5;
+		}
+		else
+		{
+			p1life = p1life - 3;
+			p2life = p2life - 3;
+		}
+		output(p1life, p2life, p1choice, p2choice, win);
+		if(checkcombo(p1choice) == true)
+		{
+			p2life = p2life - 10;
+			output(p1life, p2life, p1choice, p2choice, "COMBOOOOO FROM PLAYER 1");
+		}
+		if(checkcombo(p2choice) == true)
+		{
+			p1life = p1life - 10;
+			output(p1life, p2life, p1choice, p2choice, "COMBOOOOO FROM PLAYER 2");
+		}
+	}
 }
 
 void Menu()
@@ -259,7 +308,8 @@ int main()
 	vaporize.push("H"); vaporize.push("H"); vaporize.push("P");
 	melt.push("C"); melt.push("C"); melt.push("P");
 	reversemelt.push("P"); reversemelt.push("P"); reversemelt.push("C");
-	int selection;
+	int selection, comb;
+	comb = 0;
 	do
 	{
 		Menu();
@@ -268,8 +318,7 @@ int main()
 		{
 		case 1:
 		{
-			int temp, comb;
-			comb = 0;
+			int temp;
 			cout << "\nChoose a gamemode:\n";
 			cout << "1.Single Player\n";
 			cout << "2.Multiplayer\n";
@@ -300,7 +349,12 @@ int main()
 		}
 		case 2:
 		{
-			//settings
+			cout << "SETTINGS:\n";
+			cout << "1. Type '1' to activate combos for computer\n";
+			cout << "2. Type '0' to deactivate the combos for the computer\n";
+			cout << "Your choice:";
+			cin >> comb;
+			break;
 		}
 		case 3:
 		{
