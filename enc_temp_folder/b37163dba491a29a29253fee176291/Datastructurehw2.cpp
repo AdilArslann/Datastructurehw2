@@ -369,7 +369,7 @@ int main()
 				while (num > 1)
 				{
 					string & tempp = players[1];
-					cout << "\n\n\n\n\n\n\nPlayer 1:" << players.front() << "Player 2:" << tempp << endl;
+					cout << "\nPlayer 1:" << players.front() << "Player 2:" << tempp << endl;
 					if(multiplayer() == true)
 					{
 						players.erase(players.begin());
