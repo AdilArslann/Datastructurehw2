@@ -48,9 +48,8 @@ void outputqueue(queue<string> choice)
 
 char randomm()
 {
-	srand(time(NULL));
+	srand(time(0));
 	int num = (rand() % 3) + 1;
-	cout << num;
 	if (num == 1) 
 	{
 		return 'H';
@@ -71,44 +70,44 @@ char userselect()
 	cout << "\nPlease choose your attack element!";
 	cin >> select;
 
-	while(select != 'H' && select != 'P' && select != 'C')
+	while(select != 'H' && select != 'P' && select != 'C' && select != 'Q')
 	{
 		cout << "\nPlease enter a valid element!!";
-		cout << "\n 'H' for hydro, 'P' for pyro, and 'C' for cryo";
+		cout << "\n 'H' for hydro, 'P' for pyro, and 'C' for cryo OR Q to Quit";
 		cin >> select;
 	}
 	return select;
 }
 
-bool winner(string p1choice, string p2choice)
+string winner(string p1choice, string p2choice)
 {
 	if(p1choice == HYDRO && p2choice == PYRO)
 	{
-		return 1;
+		return "Player 1";
 	}
 	else if(p1choice == HYDRO && p2choice == CRYO)
 	{
-		return 2;
+		return "Player 2";
 	}
 	else if(p1choice == PYRO && p2choice == HYDRO)
 	{
-		return 2;
+		return "Player 2";
 	}
 	else if(p1choice == PYRO && p2choice == CRYO)
 	{
-		return 1;
+		return "Player 1";
 	}
 	else if(p1choice == CRYO && p2choice == HYDRO)
 	{
-		return 1;
+		return "Player 1";
 	}
 	else if(p1choice == CRYO && p2choice == PYRO)
 	{
-		return 2;
+		return "Player 2";
 	}
 	else
 	{
-		return 0;
+		return "Tie";
 	}
 }
 
@@ -158,10 +157,10 @@ bool checkcombo(queue<string> player)
 	}
 }
  
-void output(int h1, int h2, queue<string> p1, queue<string> p2)
+void output(int h1, int h2, queue<string> p1, queue<string> p2, string win)
 {
 	cout << "\n______________________________________________________________________________________________________\n";
-	cout << "|                                                                                                     |\n";
+	cout << "|                                     " <<  win << " SUCCESSFULL!!                                         | \n";
 	cout << "|        ____                                                                       ____              |\n";
 	cout << "|       |    |                                                                     |    |             |\n";
 	cout << "|      / _  _ \\                                                       / \\         / -  - \\            |\n";
@@ -178,21 +177,26 @@ void output(int h1, int h2, queue<string> p1, queue<string> p2)
 	cout << "|                                                                                                     |\n";
 	cout << "|      HEALTH: " << h1 << "                                                             HEALTH: " << h2 << "             |\n";
 	cout << "|      CHOICES: "; outputqueue(p1); cout << "                                                             CHOICES: "; outputqueue(p2); cout << "          |\n";
+	cout << "|                                                                                                     |\n";
 	cout << "|_____________________________________________________________________________________________________|\n";
 }
 
-void singleplayer()
+void singleplayer(int comb)
 {
 	queue<string> p1choice, cchoice;
-	string p1, com;
-	int p1life, clife, win;
+	string p1, com, win;
+	int p1life, clife;
 	p1life = 100; clife = 100;
 
-	while(p1life >= 0 && clife >= 0)
+	while(p1life > 0 && clife > 0)
 	{
 		controls();
 		p1 = userselect();
 		com = randomm();
+		if (p1 == "Q")
+		{
+			break;
+		}
 		p1choice.push(p1);
 		if (p1choice.size() > 3)
 		{
@@ -204,20 +208,30 @@ void singleplayer()
 			cchoice.pop();
 		}
 		win = winner(p1, com);
-		if(win == 1)
+		if(win == "Player 1")
 		{
 			clife = clife - 5;
 		}
-		else if(win == 2)
+		else if(win == "Player 2")
 		{
-			clife = clife - 5;
+			p1life = p1life - 5;
 		}
 		else
 		{
 			p1life = p1life - 3;
 			clife = clife - 3;
 		}
-		output(p1life, clife, p1choice, cchoice);
+		output(p1life, clife, p1choice, cchoice, win);
+		if(checkcombo(p1choice) == true)
+		{
+			clife = clife - 10;
+			output(p1life, clife, p1choice, cchoice, "COMBOOOOO FROM PLAYER 1");
+		}
+		if(comb == 1 && checkcombo(cchoice) == true)
+		{
+			p1life = p1life - 10;
+			output(p1life, clife, p1choice, cchoice, "COMBO FROM COMPUTER");
+		}
 	}
 }
 
@@ -246,51 +260,55 @@ int main()
 	melt.push("C"); melt.push("C"); melt.push("P");
 	reversemelt.push("P"); reversemelt.push("P"); reversemelt.push("C");
 	int selection;
-	Menu();
-	cin >> selection;
-
-	switch (selection)
+	do
 	{
-	case 1:
-	{
-		int temp;
-		cout << "\nChoose a gamemode:\n";
-		cout << "1.Single Player\n";
-		cout << "2.Multiplayer\n";
-		cin >> temp;
-		while (temp < 1 || temp > 3)
-		{
-			cout << "\nPlease enter the proper gamemode:";
-			cin >> temp;
-		}
-		switch (temp)
+		Menu();
+		cin >> selection;
+		switch (selection)
 		{
 		case 1:
 		{
-			singleplayer();
+			int temp, comb;
+			comb = 0;
+			cout << "\nChoose a gamemode:\n";
+			cout << "1.Single Player\n";
+			cout << "2.Multiplayer\n";
+			cin >> temp;
+			while (temp < 1 || temp > 3)
+			{
+				cout << "\nPlease enter the proper gamemode:";
+				cin >> temp;
+			}
+			switch (temp)
+			{
+			case 1:
+			{
+				singleplayer(comb);
+				break;
+			}
+			case 2:
+			{
+				multiplayer();
+				break;
+			}
+			case 3:
+			{
+				//tournament mode
+			}
+			}
 			break;
 		}
 		case 2:
 		{
-			multiplayer();
-			break;
+			//settings
 		}
 		case 3:
 		{
-			//tournament mode
+			exit(0);
 		}
+		default:
+			break;
 		}
-		break;
-	}
-	case 2:
-	{
-		//settings
-	}
-	case 3:
-	{
-		exit(0);
-	}
-	default:
-		break;
-	}
+	} while (true);
+	
 }
