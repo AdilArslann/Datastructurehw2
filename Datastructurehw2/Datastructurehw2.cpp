@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <queue>
 #include <ctime>
-#include <vector>
 #include <algorithm>
 using namespace std;
 
