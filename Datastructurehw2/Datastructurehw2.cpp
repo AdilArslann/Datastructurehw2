@@ -37,6 +37,22 @@ void controls()
 		"======================";
 }
 
+string convert(string pp)
+{
+	if (pp == HYDRO)
+	{
+		return "HYDRO!!#!!!";
+	}
+	else if (pp == PYRO)
+	{
+		return "PYRO!!!!!!!!";
+	}
+	else
+	{
+		return "CRYO!!!!!!!!!";
+	}
+}
+
 void outputqueue(queue<string> choice)
 {
 	queue<string> temp;
@@ -159,28 +175,29 @@ bool checkcombo(queue<string> player)
 	}
 }
 
-void output(int h1, int h2, queue<string> p1, queue<string> p2, string win, string dmg)
+void output(int h1, int h2, queue<string> p1, queue<string> p2, string win, string dmg, string pp1, string pp2)
 {
 	cout << "\n______________________________________________________________________________________________________\n";
-	cout << "|                                     " << win << " SUCCESSFULL!!                                         | \n";
-	cout << "|        ____                         WITH A DAMAGE OF " << dmg << "                            ____              | \n";
-	cout << "|       |    |                                                                     |    |             |\n";
-	cout << "|      / _  _ \\                                                       / \\         / -  - \\            |\n";
-	cout << "|     |  o  O  |        _                                             | |        |  w   w |           |\n";
-	cout << "|      \\  W   /        /_\\                                            | |         \\  \\/  /            |\n";
-	cout << "|       \\____/         | |                                            | |          \\____/             |\n";
-	cout << "|    ____|  |______    | |                                            | |     ______|  |____          |\n";
-	cout << "|   \\ \\            \\   | |                                            | |    /            / /         |\n";
-	cout << "|   |\\ \\         |\\ \\  |_|                                            / \\   / /|         / /|         |\n";
-	cout << "|   | \\ \\        | \\ \\|   |                                          /[ ]\\ / / |        / / |         |\n";
-	cout << "|   |  \\ \\_______|__\\/|   |                                           [ ]  \\/__|_______/ /  |         |\n";
-	cout << "|   |   \\___________| |___|                                           [_]  |____________/   |         |\n";
-	cout << "|                                                                                                     |\n";
-	cout << "|                                                                                                     |\n";
-	cout << "|      HEALTH: " << h1 << "                                                             HEALTH: " << h2 << "             |\n";
-	cout << "|      CHOICES: "; outputqueue(p1); cout << "                                                             CHOICES: "; outputqueue(p2); cout << "          |\n";
-	cout << "|                                                                                                     |\n";
-	cout << "|_____________________________________________________________________________________________________|\n";
+	cout << "|                                     " << win << " SUCCESSFULL!!                                          \n";
+	cout << "|                                     WITH A DAMAGE OF " << dmg << "          \n";
+	cout << "|        ____                                                                       ____               \n";
+	cout << "|       |    |                                                                     |    |             \n";
+	cout << "|      / _  _ \\   " << pp1 << "                                        / \\         / -  - \\            \n";
+	cout << "|     |  o  O  |        _                                             | |        |  w   w |           \n";
+	cout << "|      \\  W   /        /_\\                                            | |         \\  \\/  /            \n";
+	cout << "|       \\____/         | |                                            | |          \\____/             \n";
+	cout << "|    ____|  |______    | |                                            | |     ______|  |____          \n";
+	cout << "|   \\ \\            \\   | |                                            | |    /            / /         \n";
+	cout << "|   |\\ \\         |\\ \\  |_|                                            / \\   / /|         / /|         \n";
+	cout << "|   | \\ \\        | \\ \\|   |                                          /[ ]\\ / / |        / / |         \n";
+	cout << "|   |  \\ \\_______|__\\/|   |                                           [ ]  \\/__|_______/ /  |         \n";
+	cout << "|   |   \\___________| |___|                                           [_]  |____________/   |         \n";
+	cout << "|                                                           " << pp2 << "                                    \n";
+	cout << "|                                                                                                     \n";
+	cout << "|      HEALTH: " << h1 << "                                                             HEALTH: " << h2 << "             \n";
+	cout << "|      CHOICES: "; outputqueue(p1); cout << "                                                             CHOICES: "; outputqueue(p2); cout << "          \n";
+	cout << "|                                                                                                     \n";
+	cout << "|_____________________________________________________________________________________________________\n";
 }
 
 void singleplayer(int comb)
@@ -210,32 +227,34 @@ void singleplayer(int comb)
 			cchoice.pop();
 		}
 		win = winner(p1, com);
+		p1 = convert(p1);
+		com = convert(com);
 		if (win == "Player 1")
 		{
 			clife = clife - 5;
-			output(p1life, clife, p1choice, cchoice, win, "5");
+			output(p1life, clife, p1choice, cchoice, win, "5", p1, com);
 		}
 		else if (win == "Player 2")
 		{
 			p1life = p1life - 5;
-			output(p1life, clife, p1choice, cchoice, win, "5");
+			output(p1life, clife, p1choice, cchoice, win, "5", p1, com);
 		}
 		else
 		{
 			p1life = p1life - 3;
 			clife = clife - 3;
-			output(p1life, clife, p1choice, cchoice, win, "3 To BOTH SIDES!!");
+			output(p1life, clife, p1choice, cchoice, win, "3 To BOTH SIDES!!", p1, com);
 		}
 
 		if (checkcombo(p1choice) == true)
 		{
 			clife = clife - 10;
-			output(p1life, clife, p1choice, cchoice, "COMBOOOOO FROM PLAYER 1", "10");
+			output(p1life, clife, p1choice, cchoice, "COMBOOOOO FROM PLAYER 1", "10", p1, com);
 		}
 		if (comb == 1 && checkcombo(cchoice) == true)
 		{
 			p1life = p1life - 10;
-			output(p1life, clife, p1choice, cchoice, "COMBO FROM COMPUTER", "10");
+			output(p1life, clife, p1choice, cchoice, "COMBO FROM COMPUTER", "10", p1, com);
 		}
 	}
 }
@@ -267,29 +286,33 @@ bool multiplayer()
 			p2choice.pop();
 		}
 		win = winner(p1, p2);
+		p1 = convert(p1);
+		p2 = convert(p2);
 		if (win == "Player 1")
 		{
 			p2life = p2life - 5;
+			output(p1life, p2life, p1choice, p2choice, win, "5", p1, p2);
 		}
 		else if (win == "Player 2")
 		{
 			p1life = p1life - 5;
+			output(p1life, p2life, p1choice, p2choice, win, "5", p1, p2);
 		}
 		else
 		{
 			p1life = p1life - 3;
 			p2life = p2life - 3;
+			output(p1life, p2life, p1choice, p2choice, win, "3 to BOTH SIDES", p1, p2);
 		}
-		output(p1life, p2life, p1choice, p2choice, win, "5");
 		if (checkcombo(p1choice) == true)
 		{
 			p2life = p2life - 10;
-			output(p1life, p2life, p1choice, p2choice, "COMBOOOOO FROM PLAYER 1", "10");
+			output(p1life, p2life, p1choice, p2choice, "COMBOOOOO FROM PLAYER 1", "10", p1, p2);
 		}
 		if (checkcombo(p2choice) == true)
 		{
 			p1life = p1life - 10;
-			output(p1life, p2life, p1choice, p2choice, "COMBOOOOO FROM PLAYER 2", "10");
+			output(p1life, p2life, p1choice, p2choice, "COMBOOOOO FROM PLAYER 2", "10", p1, p2);
 		}
 	}
 	if (p1life == 0)
@@ -442,16 +465,30 @@ int main()
 		}
 		case 2:
 		{
+			int temppp;
 			cout << "SETTINGS:\n";
 			cout << "1. Type '1' to activate combos for computer\n";
 			cout << "2. Type '0' to deactivate the combos for the computer\n";
+			cout << "3. Back to the menu\n";
 			cout << "Your choice:";
-			cin >> comb;
-			break;
+			cin >> temppp;
+			if (temppp == 1)
+			{
+				comb = 1;
+			}
+			else if (temppp == 2)
+			{
+				comb = 2;
+			}
+			else
+			{
+				break;
+			}
 		}
 		case 3:
 		{
 			exit(0);
+			cout << "BYE BYEEEEEEEEE";
 		}
 		default:
 			break;
